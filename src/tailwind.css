@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.scrollbar::-webkit-scrollbar {
+    height:4px;
+    width: 12px;
+    background-color: transparent;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(100, 116, 139);
+    border: 2px white solid;
+    border-radius: 4px;
+}
+
+:is(:where(.dark) .dark\:scrollbar-dark)::-webkit-scrollbar-thumb{
+    background-color: white;
+    border: 2px rgb(30, 41, 59) solid;
+    border-radius: 4px;
+}
