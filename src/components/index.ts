@@ -1,3 +1,4 @@
 import '../tailwind.css'
 
-export {Search} from './Search'
+export {SearchWrapper} from './SearchWrapper'
+export {SearchElement} from './SearchElement'

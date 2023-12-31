@@ -45,7 +45,7 @@ export default [
     ],
   },
   { //TYPESCRIPT
-    input: "./src/index.ts",
+    input: "./src/components/index.ts",
     output: [
       {
         file: "dist/index.d.ts",
