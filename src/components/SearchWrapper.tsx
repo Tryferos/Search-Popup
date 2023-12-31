@@ -2,18 +2,12 @@ import React, { ReactNode, forwardRef, useEffect, useState } from 'react';
 import '../tailwind.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ExitIcon, SearchIcon } from './svg';
-import { SearchContext } from './SearchElement';
-
-export type SearchProps<T> = {
-    size?: string;
-    placeholder?: string;
-    darkMode?: boolean;
-    children?: ReactNode;
-}
+import { SearchContext, SearchProps } from '.';
+import { SearchContent } from './SearchContent';
 
 export const SearchWrapper = forwardRef(SearchWrapperRef);
 
-function SearchWrapperRef<T extends ReactNode & {}>(props: SearchProps<T> & SearchContext, ref: React.ForwardedRef<HTMLDivElement>) {
+function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.ForwardedRef<HTMLDivElement>) {
     const [query, setQuery] = useState('');
     const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(ev.target.value);
@@ -33,11 +27,9 @@ function SearchWrapperRef<T extends ReactNode & {}>(props: SearchProps<T> & Sear
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className={`py-4 border-b-[1px] h-[75%] border-b-gray-200 border-t-[1px] border-t-gray-200 overflow-y-auto`}
+                    className={`pt-2 pb-6 border-b-[1px] h-[75%] gap-y-2 flex flex-col dark:scrollbar-dark scrollbar border-b-gray-200 border-t-[1px] border-t-gray-200 overflow-y-auto`}
                 >
-                    <p>hey</p>
-                    <p>hey</p>
-
+                    <SearchContent query={query} {...props} placeholder={placeholder} darkMode={darkMode} />
                 </motion.ul>
             </AnimatePresence>
         </section>

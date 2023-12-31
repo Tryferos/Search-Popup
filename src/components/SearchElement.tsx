@@ -1,20 +1,13 @@
 import { Root, createRoot } from "react-dom/client";
-import { SearchProps, SearchWrapper } from "./SearchWrapper"
+import { SearchWrapper } from "./SearchWrapper"
 import React, { ReactElement, ReactNode, useEffect, useRef, useContext, createContext, Fragment } from 'react';
 import { SearchIcon } from "./svg";
 import { AnimatePresence } from "framer-motion";
-type SearchElementProps = {
+import { SearchContext, SearchProps } from ".";
 
-}
+type Props = SearchProps & SearchContext;
 
-export type SearchContext = {
-    isOpen: boolean;
-    handleOpen: (forceOpen?: boolean) => void;
-}
-
-type Props<T> = SearchProps<T> & SearchContext;
-
-export function SearchPrompt<T>(props: Props<T>) {
+export function SearchPrompt(props: Props) {
     const placeholder = props.placeholder ?? 'Search something...';
     const onClick = () => {
         props.handleOpen(true);
@@ -28,7 +21,7 @@ export function SearchPrompt<T>(props: Props<T>) {
     )
 }
 
-export function SearchElement<T>(props: SearchProps<T>) {
+export function SearchElement(props: SearchProps) {
     const [open, setIsOpen] = React.useState(true);
     const [root, setRoot] = React.useState<Root | null>(null);
     const handleOpen = (forceOpen?: boolean) => {
@@ -51,13 +44,16 @@ export function SearchElement<T>(props: SearchProps<T>) {
 
 
 
-export function SearchTriggered<T>(props: Props<T>
+export function SearchTriggered<T>(props: Props
 ) {
     const ref = useRef<HTMLDivElement>(null);
     const { isOpen, handleOpen } = props;
     useEffect(() => {
         if (!isOpen) return;
-        document.getElementById('search-root')!.style.pointerEvents = 'all';
+        const root = document.getElementById('search-root');
+        if (root) {
+            root.style.pointerEvents = 'all';
+        }
         const onClick = (ev: MouseEvent) => {
             if (ref.current?.contains(ev.target as Node) ||
                 (ev.target as HTMLElement).id == 'search-prompt' ||
@@ -66,7 +62,10 @@ export function SearchTriggered<T>(props: Props<T>
         }
         document.addEventListener('click', onClick);
         return () => {
-            document.getElementById('search-root')!.style.pointerEvents = 'none';
+            const root = document.getElementById('search-root');
+            if (root) {
+                root.style.pointerEvents = 'none';
+            }
             document.removeEventListener('click', onClick);
         }
     }, [])

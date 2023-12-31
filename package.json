@@ -46,6 +46,7 @@
     "@storybook/react": "^7.6.6",
     "@storybook/react-vite": "^7.6.6",
     "@storybook/test": "^7.6.6",
+    "@svgr/rollup": "^8.1.0",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^9.8.8",
     "babel-loader": "^9.1.3",

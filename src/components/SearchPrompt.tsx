@@ -1,11 +1,9 @@
 import React, { ReactNode, useEffect } from "react";
-import { createRoot, } from 'react-dom/client'
 import { SearchIcon } from "./svg";
-import { SearchProps, SearchWrapper } from "./SearchWrapper";
-import { SearchContext, SearchElement, SearchTriggered } from "./SearchElement";
+import { SearchContext, SearchProps } from ".";
 
 
-export function SearchPrompt<T>(props: SearchProps<T> & SearchContext) {
+export function SearchPrompt(props: SearchProps & SearchContext) {
     const placeholder = props.placeholder ?? 'Search something...';
     const { isOpen, handleOpen } = props;
     const onClick = () => {
