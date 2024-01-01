@@ -15,6 +15,7 @@ export function SearchContent(props: SearchContentProps) {
     const darkMode = props.darkMode ?? false;
     const openInNewTab = props.openInNewTab ?? true;
     const showRecent = props.showRecent ?? true;
+    const shadow = props.shadow ?? true;
 
     const findItem = (content: string, title: string) => {
         const regex = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
@@ -55,25 +56,28 @@ export function SearchContent(props: SearchContentProps) {
                         const iconSize = size == 'small' ? 'size-6 min-w-[24px]' : size == 'medium' ? 'size-8 min-w-[36px]' : 'size-12 min-w-[52px]';
                         return (
                             <li
-                                key={i} className=''>
-                                <motion.h3
-                                    initial={{ opacity: animate ? 0 : 1 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: duration }}
-                                    exit={{ opacity: animate ? 0 : 1 }}
-                                    className='text-lg py-2 font-medium'>{section.title}</motion.h3>
+                                key={i} className='flex flex-col'>
+                                <div className='flex'>
+                                    <motion.h3
+                                        initial={{ opacity: animate ? 0 : 1 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: duration }}
+                                        exit={{ opacity: animate ? 0 : 1 }}
+                                        className='text-lg py-2 font-medium px-4 rounded-md'>{section.title}
+                                    </motion.h3>
+                                </div>
                                 {
                                     section.items.map((item, j) => {
                                         return (
                                             <motion.a
-                                                className='relative transition-all'
+                                                className='relative transition-all '
                                                 initial={{ opacity: animate ? 0 : 1 }}
                                                 animate={{ opacity: 1 }}
                                                 transition={{ duration: duration }}
                                                 exit={{ opacity: animate ? 0 : 1 }}
                                                 key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
                                                 <div
-                                                    className='flex group hover:bg-sky-400 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2'>
+                                                    className={`flex group ${shadow && 'shadow-box-down hover:shadow-none'} hover:bg-sky-400 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
                                                         <figure className={`w-[5%] ${iconSize} flex items-center justify-center`}>
                                                             {
@@ -135,7 +139,6 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
             start,
             end
         );
-        console.log(start, end, index, endingIndex)
         if (substring.length >= 78) return substring.concat('...');
         return substring;
     }

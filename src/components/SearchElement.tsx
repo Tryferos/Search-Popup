@@ -1,6 +1,6 @@
 import { Root, createRoot } from "react-dom/client";
 import { SearchWrapper } from "./SearchWrapper"
-import React, { ReactElement, ReactNode, useEffect, useRef, useContext, createContext, Fragment } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useRef, useContext, createContext, Fragment, useState } from 'react';
 import { SearchIcon } from "./svg";
 import { AnimatePresence } from "framer-motion";
 import { SearchContext, SearchProps } from ".";
@@ -22,8 +22,8 @@ export function SearchPrompt(props: Props) {
 }
 
 export function SearchElement(props: SearchProps) {
-    const [open, setIsOpen] = React.useState(true);
-    const [root, setRoot] = React.useState<Root | null>(null);
+    const [open, setIsOpen] = useState(false);
+    const [root, setRoot] = useState<Root | null>(null);
     const handleOpen = (forceOpen?: boolean) => {
         setIsOpen(forceOpen ?? !open);
     }

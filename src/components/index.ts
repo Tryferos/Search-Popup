@@ -32,6 +32,7 @@ export type SearchProps = {
     darkMode?: boolean;
     promptSize?: string;
     sections: Section[];
+    shadow?: boolean;
     highlight?: Highlight;
     animation?: Animation;
     showRecent?: boolean;

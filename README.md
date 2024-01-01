@@ -1,4 +1,4 @@
-# Dropdown Components
+# Search Popup Component
 
 [Install the package for npm here.](https://www.npmjs.com/package/@tryferos/search)
 
