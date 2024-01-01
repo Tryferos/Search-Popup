@@ -16,7 +16,7 @@ All files are bundled into 3 seperate files for both cjs, esm and dts using the 
 -   :white_check_mark: **FULLY** Customizable to your needs
 -   :white_check_mark: Opens as a popup.
 -   :white_check_mark: Animations.
--   :hourglass_flowing_sand: Light/dark mode toggle
+-   :white_check_mark: Light/dark mode toggle
 
 ## :electric_plug: Installation
 
@@ -25,7 +25,7 @@ All files are bundled into 3 seperate files for both cjs, esm and dts using the 
 Install @tryferos/dropdown using
 
 ```bash
-  npm install @tryferos/search@1.0.2
+  npm install @tryferos/search@1.1.1
 ```
 
 Remember that you need to have react and react-dom already installed
@@ -37,7 +37,7 @@ Remember that you need to have react and react-dom already installed
 This package is build using react 18, you can use with different versions of react at your own risk.
 
 ```bash
-  npm install @tryferos/search@1.0.2 --force
+  npm install @tryferos/search@1.1.1 --force
 ```
 
 Import the components
@@ -51,6 +51,7 @@ import { SearchElement } from "@tryferos/search";
 ```typescript
     placeholder?: string;
     darkMode?: boolean;
+    shadow?: boolean;
     promptSize?: string;
     sections: Array<{
         title: string;
@@ -71,8 +72,13 @@ import { SearchElement } from "@tryferos/search";
         animate?: boolean;
         duration?: 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6;
     };
+    //Render a different component as a search promp to open the search popup with.
+    children?: ReactNode;
+    //
     showRecent?: boolean;
     openInNewTab?: boolean;
+    onSearch?: (query: string) => void;
+    onOpenTrigger?: (isOpen: boolean) => void;
 ```
 
 ## :information_source: Acknowledgements
