@@ -14,24 +14,28 @@ function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.Forward
     }
     const placeholder = props.placeholder ?? 'Search something...';
     const darkMode = props.darkMode ?? false;
+    const animate = props.animation?.animate ?? true;
+    const duration = props.animation?.duration ?? 0.3;
 
     return (
-        <section ref={ref} className={`w-[60%] min-w-[350px] outline outline-1 outline-indigo-100 *:px-6 py-2 rounded-md shadow-box bg-white h-[60vh] flex flex-col`}>
+        <motion.section
+            initial={{ opacity: animate ? 0 : 1, scale: animate ? 0.4 : 1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: duration / 1.5 }}
+            exit={{ opacity: animate ? 0 : 1, scale: animate ? 0.4 : 1 }}
+            ref={ref} className={`w-[60%] min-w-[350px] outline outline-1 outline-indigo-100 *:px-6 py-2 rounded-md shadow-box bg-white h-[60vh] flex flex-col`}>
             <div className='flex items-center gap-x-6 text-gray-600 pb-2 pt-1'>
                 <SearchIcon />
                 <input placeholder={placeholder} type='text' className='w-full font-medium outline-none py-2' value={query} onChange={onChange} />
                 <ExitIcon onClick={() => props.handleOpen(false)} />
             </div>
             <AnimatePresence>
-                <motion.ul
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                <ul
                     className={`pt-2 pb-6 border-b-[1px] h-[75%] gap-y-2 flex flex-col dark:scrollbar-dark scrollbar border-b-gray-200 border-t-[1px] border-t-gray-200 overflow-y-auto`}
                 >
-                    <SearchContent query={query} {...props} placeholder={placeholder} darkMode={darkMode} />
-                </motion.ul>
+                    <SearchContent animation={{ animate: animate }} query={query} {...props} placeholder={placeholder} darkMode={darkMode} />
+                </ul>
             </AnimatePresence>
-        </section>
+        </motion.section>
     )
 }

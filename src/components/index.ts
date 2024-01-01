@@ -16,8 +16,9 @@ type Item = {
     icon?: ReactElement | string;
 }
 
-type Animation = {
+export type Animation = {
     animate?: boolean;
+    duration?: 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6;
 }
 
 type Highlight = {
@@ -34,6 +35,7 @@ export type SearchProps = {
     animation?: Animation;
     showRecent?: boolean;
     openInNewTab?: boolean;
+    onSearch?: (query: string) => void;
 }
 
 export type SearchContext = {

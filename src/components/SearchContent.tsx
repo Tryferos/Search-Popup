@@ -1,16 +1,17 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { SearchProps } from '.';
-import { ArrowIcon, Bolt, SearchIcon } from './svg';
+import { SearchProps, Animation } from '.';
+import { ArrowIcon, Bolt } from './svg';
+import { AnimatePresence, motion } from 'framer-motion'
 
 type SearchContentProps = {
     query: string;
 } & SearchProps
 const HIGHLIGHT_SYNTAX = '/hightlight/';
 export function SearchContent(props: SearchContentProps) {
-    const { query } = props;
+    const { query, animation } = props;
+    const { animate, duration } = animation as Animation;
     const [sections, setSections] = useState(props.sections ?? []);
     const highlightFoundItems = props.highlight?.highlight ?? true;
-    const highlightColor = props.highlight?.color ?? '#38bdf8';
     const darkMode = props.darkMode ?? false;
     const openInNewTab = props.openInNewTab ?? true;
     const showRecent = props.showRecent ?? true;
@@ -40,61 +41,76 @@ export function SearchContent(props: SearchContentProps) {
         });
 
         setSections(mappedSections ?? []);
+        props.onSearch?.(query);
 
     }, [query])
 
-    if (query.length == 0) return null;
+
     return (
         <Fragment>
-            {
-                sections.map((section, i) => {
-                    return (
-                        <li key={i} className=''>
-                            <h3 className='text-lg py-2 font-medium'>{section.title}</h3>
-                            {
-                                section.items.map((item, j) => {
-                                    return (
-                                        <a key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
-                                            <div
-                                                className='flex group px-4 hover:bg-sky-500 rounded hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2'>
-                                                <div className='flex gap-x-4 items-center w-[80%]'>
-                                                    <figure className='w-[5%] min-w-[24px]'>
-                                                        {
-                                                            (!item.icon && !section.icon) ? <Bolt /> :
-                                                                <img className='w-6 h-6' src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
-                                                        }
-                                                    </figure>
-                                                    <div className='flex flex-col w-[calc(95%-16px)]'>
-                                                        <h3 className='font-medium truncate text-lg first-letter:uppercase'>
-                                                            <HighlightText text={item.title} query={query}
-                                                                highlightFoundItems={highlightFoundItems} color={highlightColor} />
-                                                        </h3>
-                                                        <p className='text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
-                                                            <HighlightText text={item.content} query={query}
-                                                                highlightFoundItems={highlightFoundItems} color={highlightColor} />
-                                                        </p>
+            <AnimatePresence>
+                {(sections.length != 0 && query.length != 0) ?
+                    sections.map((section, i) => {
+                        return (
+                            <li
+                                key={i} className=''>
+                                <motion.h3
+                                    initial={{ opacity: animate ? 0 : 1 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: duration }}
+                                    exit={{ opacity: animate ? 0 : 1 }}
+                                    className='text-lg py-2 font-medium'>{section.title}</motion.h3>
+                                {
+                                    section.items.map((item, j) => {
+                                        return (
+                                            <motion.a
+                                                className='relative transition-all'
+                                                initial={{ opacity: animate ? 0 : 1 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ duration: duration }}
+                                                exit={{ opacity: animate ? 0 : 1 }}
+                                                key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
+                                                <div
+                                                    className='flex group hover:bg-sky-400 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2'>
+                                                    <div className='flex gap-x-4 items-center w-[80%]'>
+                                                        <figure className='w-[5%] min-w-[24px]'>
+                                                            {
+                                                                (!item.icon && !section.icon) ? <Bolt /> :
+                                                                    <img className='w-6 h-6' src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
+                                                            }
+                                                        </figure>
+                                                        <div className='flex flex-col w-[calc(95%-16px)]'>
+                                                            <h3 className='font-medium truncate text-lg first-letter:uppercase'>
+                                                                <HighlightText text={item.title} query={query}
+                                                                    highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
+                                                            </h3>
+                                                            <p className='text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
+                                                                <HighlightText text={item.content} query={query}
+                                                                    highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <ArrowIcon />
                                                 </div>
-                                                <ArrowIcon />
-                                            </div>
-                                        </a>
-                                    )
-                                })
-                            }
+                                            </motion.a>
+                                        )
+                                    })
+                                }
 
-                        </li>
-                    )
-                })
-            }
+                            </li>
+                        )
+                    }) : null
+                }
+            </AnimatePresence>
         </Fragment>
     )
 }
 
 function HighlightText({ text: aText, query, highlightFoundItems, color }:
-    { text: string; query: string; highlightFoundItems: boolean; color: string }) {
+    { text: string; query: string; highlightFoundItems: boolean; color?: string }) {
     const ref = useRef<HTMLSpanElement>(null);
     useEffect(() => {
-        if (!ref || !ref.current || !highlightFoundItems) return;
+        if (!ref || !ref.current || !highlightFoundItems || !color) return;
         ref.current.style.color = color;
     }, [ref])
     const regex = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
@@ -122,7 +138,7 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
         <>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
-            {foundTitle && <span ref={ref} className='group-hover:text-white'>{titleHighlighted}</span>}
+            {foundTitle && <span ref={ref} className='group-hover:text-red-400 text-sky-400'>{titleHighlighted}</span>}
             {foundTitle && titleNormalAfter}
         </>
     )

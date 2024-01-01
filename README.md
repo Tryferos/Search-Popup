@@ -15,8 +15,8 @@ All files are bundled into 3 seperate files for both cjs, esm and dts using the 
 -   :white_check_mark: Typescript support
 -   :white_check_mark: **FULLY** Customizable to your needs
 -   :white_check_mark: Opens as a popup.
+-   :white_check_mark: Animations.
 -   :hourglass_flowing_sand: Light/dark mode toggle
--   :hourglass_flowing_sand: Animations.
 
 ## :electric_plug: Installation
 
