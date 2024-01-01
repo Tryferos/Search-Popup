@@ -129,10 +129,13 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
     function getPartialText() {
         if (index == -1) return aText;
         const endingIndex = index + query.length;
+        const start = query.length < 32 ? Math.max(0, endingIndex - 32) : index;
+        const end = query.length < 32 ? Math.min(aText.length, 64 + endingIndex) : aText.length;
         const substring = aText.substring(
-            query.length < 32 ? Math.max(0, endingIndex - 56) : index,
-            query.length < 32 ? Math.min(aText.length, 64 + endingIndex) : aText.length
+            start,
+            end
         );
+        console.log(start, end, index, endingIndex)
         if (substring.length >= 78) return substring.concat('...');
         return substring;
     }
