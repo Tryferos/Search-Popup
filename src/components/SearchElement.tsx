@@ -14,7 +14,7 @@ export function SearchPrompt(props: Props) {
     }
     return (
         <div id='search-prompt' onClick={onClick}
-            className={`outline cursor-pointer hover:outline-gray-400 text-gray-500 font-medium flex gap-x-4 min-w-[200px] w-10 py-2 px-2 outline-1 outline-gray-300 rounded bg-white`}>
+            className={`outline cursor-pointer hover:outline-gray-900 text-gray-600 flex gap-x-4 min-w-[200px] w-10 py-2 px-2 outline-1 outline-gray-600 rounded bg-white`}>
             <SearchIcon />
             <p>{placeholder}</p>
         </div>
@@ -23,13 +23,17 @@ export function SearchPrompt(props: Props) {
 
 export function SearchElement(props: SearchProps) {
     const [open, setIsOpen] = useState(false);
-    const [root, setRoot] = useState<Root | null>(null);
     const handleOpen = (forceOpen?: boolean) => {
+        console.log('trigger', forceOpen);
         setIsOpen(forceOpen ?? !open);
     }
+    console.log(open)
     return (
         <Fragment>
-            <SearchPrompt {...props} handleOpen={handleOpen} isOpen={open} />
+            {
+                props.children ? <div id='search-prompt' onClick={() => handleOpen(true)}>{props.children}</div> :
+                    <SearchPrompt {...props} handleOpen={handleOpen} isOpen={open} />
+            }
             <section id='search-root' className="w-[100vw] h-[100vh] pointer-events-none fixed top-0 left-0 z-[10000]">
                 <AnimatePresence>
                     {
@@ -55,9 +59,11 @@ export function SearchTriggered<T>(props: Props
             root.style.pointerEvents = 'all';
         }
         const onClick = (ev: MouseEvent) => {
+            const prompt = document.getElementById('search-prompt');
+            if (!prompt) return;
             if (ref.current?.contains(ev.target as Node) ||
                 (ev.target as HTMLElement).id == 'search-prompt' ||
-                ((ev.target as HTMLElement).parentNode as HTMLElement).id == 'search-prompt') return;
+                prompt.contains(ev.target as HTMLElement)) return;
             handleOpen(false);
         }
         document.addEventListener('click', onClick);

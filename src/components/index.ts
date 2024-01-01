@@ -36,6 +36,7 @@ export type SearchProps = {
     highlight?: Highlight;
     animation?: Animation;
     showRecent?: boolean;
+    children?: ReactElement;
     openInNewTab?: boolean;
     onSearch?: (query: string) => void;
 }
