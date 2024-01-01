@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import { SearchProps } from '.';
 import { ArrowIcon, Bolt, SearchIcon } from './svg';
 import bolt from './svg/bolt.svg';
@@ -12,7 +12,10 @@ export function SearchContent(props: SearchContentProps) {
     const [sections, setSections] = useState(props.sections ?? []);
     const highlightFoundItems = props.highlight?.highlight ?? true;
     const highlightColor = props.highlight?.color ?? '#38bdf8';
+    const darkMode = props.darkMode ?? false;
     const openInNewTab = props.openInNewTab ?? true;
+    const showRecent = props.showRecent ?? true;
+
     const findItem = (content: string, title: string) => {
         const regex = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
         const found = content.match(regex) || title.match(regex);
@@ -64,10 +67,12 @@ export function SearchContent(props: SearchContentProps) {
                                                     </figure>
                                                     <div className='flex flex-col w-[calc(95%-16px)]'>
                                                         <h3 className='font-medium truncate text-lg first-letter:uppercase'>
-                                                            <HighlightText text={item.title} query={query} />
+                                                            <HighlightText text={item.title} query={query}
+                                                                highlightFoundItems={highlightFoundItems} color={highlightColor} />
                                                         </h3>
                                                         <p className='text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
-                                                            <HighlightText text={item.content} query={query} />
+                                                            <HighlightText text={item.content} query={query}
+                                                                highlightFoundItems={highlightFoundItems} color={highlightColor} />
                                                         </p>
                                                     </div>
                                                 </div>
@@ -86,7 +91,13 @@ export function SearchContent(props: SearchContentProps) {
     )
 }
 
-function HighlightText({ text: aText, query }: { text: string; query: string }) {
+function HighlightText({ text: aText, query, highlightFoundItems, color }:
+    { text: string; query: string; highlightFoundItems: boolean; color: string }) {
+    const ref = useRef<HTMLSpanElement>(null);
+    useEffect(() => {
+        if (!ref || !ref.current || !highlightFoundItems) return;
+        ref.current.style.color = color;
+    }, [ref])
     const regex = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
     const index = aText.search(regex);
     const vText = aText.length > 32 ? getPartialText() : aText;
@@ -112,7 +123,7 @@ function HighlightText({ text: aText, query }: { text: string; query: string }) 
         <>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
-            {foundTitle && <span className='text-sky-400 group-hover:text-red-400'>{titleHighlighted}</span>}
+            {foundTitle && <span ref={ref} className='group-hover:text-white'>{titleHighlighted}</span>}
             {foundTitle && titleNormalAfter}
         </>
     )
