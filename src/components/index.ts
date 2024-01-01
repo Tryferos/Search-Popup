@@ -39,6 +39,7 @@ export type SearchProps = {
     children?: ReactElement;
     openInNewTab?: boolean;
     onSearch?: (query: string) => void;
+    onOpenTrigger?: (isOpen: boolean) => void;
 }
 
 export type SearchContext = {

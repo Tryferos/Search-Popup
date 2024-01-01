@@ -12,7 +12,7 @@ export function SearchContent(props: SearchContentProps) {
     const { animate, duration } = animation as Animation;
     const [sections, setSections] = useState(props.sections ?? []);
     const highlightFoundItems = props.highlight?.highlight ?? true;
-    const darkMode = props.darkMode ?? false;
+    const darkMode = props.darkMode as boolean;
     const openInNewTab = props.openInNewTab ?? true;
     const showRecent = props.showRecent ?? true;
     const shadow = props.shadow ?? true;
@@ -63,7 +63,7 @@ export function SearchContent(props: SearchContentProps) {
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: duration }}
                                         exit={{ opacity: animate ? 0 : 1 }}
-                                        className='text-lg py-2 font-medium px-4 rounded-md'>{section.title}
+                                        className='text-lg dark:text-white py-2 font-medium px-4 rounded-md'>{section.title}
                                     </motion.h3>
                                 </div>
                                 {
@@ -77,7 +77,7 @@ export function SearchContent(props: SearchContentProps) {
                                                 exit={{ opacity: animate ? 0 : 1 }}
                                                 key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
                                                 <div
-                                                    className={`flex group ${shadow && 'shadow-box-down hover:shadow-none'} hover:bg-sky-400 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
+                                                    className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down hover:shadow-none dark:shadow-none'} hover:bg-sky-400 dark:hover:bg-white dark:hover:text-black px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
                                                         <figure className={`w-[5%] ${iconSize} flex items-center justify-center`}>
                                                             {
@@ -90,7 +90,7 @@ export function SearchContent(props: SearchContentProps) {
                                                                 <HighlightText text={item.title} query={query}
                                                                     highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
                                                             </h3>
-                                                            <p className='text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
+                                                            <p className='text-gray-600 dark:text-gray-300 dark:group-hover:text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
                                                                 <HighlightText text={item.content} query={query}
                                                                     highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
                                                             </p>
