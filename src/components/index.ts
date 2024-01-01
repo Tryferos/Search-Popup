@@ -7,6 +7,7 @@ type Section = {
     title: string;
     items: Item[];
     icon?: string;
+    iconSize?: 'small' | 'medium' | 'large';
 }
 
 type Item = {

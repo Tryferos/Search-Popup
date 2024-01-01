@@ -51,6 +51,8 @@ export function SearchContent(props: SearchContentProps) {
             <AnimatePresence>
                 {(sections.length != 0 && query.length != 0) ?
                     sections.map((section, i) => {
+                        const size = section.iconSize ?? 'medium';
+                        const iconSize = size == 'small' ? 'size-6 min-w-[24px]' : size == 'medium' ? 'size-8 min-w-[36px]' : 'size-12 min-w-[52px]';
                         return (
                             <li
                                 key={i} className=''>
@@ -73,10 +75,10 @@ export function SearchContent(props: SearchContentProps) {
                                                 <div
                                                     className='flex group hover:bg-sky-400 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2'>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
-                                                        <figure className='w-[5%] min-w-[24px]'>
+                                                        <figure className={`w-[5%] ${iconSize} flex items-center justify-center`}>
                                                             {
                                                                 (!item.icon && !section.icon) ? <Bolt /> :
-                                                                    <img className='w-6 h-6' src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
+                                                                    <img className={iconSize} src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
                                                             }
                                                         </figure>
                                                         <div className='flex flex-col w-[calc(95%-16px)]'>
