@@ -90,7 +90,7 @@ export function SearchContent(props: SearchContentProps) {
                                                                 <HighlightText text={item.title} query={query}
                                                                     highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
                                                             </h3>
-                                                            <p className='text-gray-600 dark:text-gray-300 dark:group-hover:text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
+                                                            <p className='text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
                                                                 <HighlightText text={item.content} query={query}
                                                                     highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
                                                             </p>
@@ -143,11 +143,11 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
         return substring;
     }
     return (
-        <>
+        <span className='dark:text-gray-300 dark:group-hover:text-gray-600'>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
             {foundTitle && <span ref={ref} className='group-hover:text-red-400 text-sky-400'>{titleHighlighted}</span>}
             {foundTitle && titleNormalAfter}
-        </>
+        </span>
     )
 }

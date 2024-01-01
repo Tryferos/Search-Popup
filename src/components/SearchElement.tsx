@@ -38,7 +38,6 @@ export function SearchElement(props: SearchProps) {
     const [open, setIsOpen] = useState(false);
     const darkMode = props.darkMode ?? false;
     const handleOpen = (forceOpen?: boolean) => {
-        console.log('trigger', forceOpen);
         setIsOpen(forceOpen ?? !open);
     }
     useEffect(() => {
