@@ -1,13 +1,13 @@
 {
   "name": "@tryferos/search",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Provides you with search components to use in your React app.",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tryferos/Dropdown-Search"
+    "url": "https://github.com/Tryferos/Search-Popup"
   },
   "keywords": [
     "react",

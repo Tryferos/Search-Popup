@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react';
 import { SearchProps } from '.';
 import { ArrowIcon, Bolt, SearchIcon } from './svg';
-import bolt from './svg/bolt.svg';
 
 type SearchContentProps = {
     query: string;
