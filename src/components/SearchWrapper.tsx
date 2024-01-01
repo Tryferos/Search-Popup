@@ -16,7 +16,7 @@ function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.Forward
     const darkMode = props.darkMode ?? false;
 
     return (
-        <section ref={ref} className={`w-[60%] outline outline-1 outline-indigo-100 *:px-6 py-2 rounded-md shadow-box bg-white h-[60vh] flex flex-col`}>
+        <section ref={ref} className={`w-[60%] min-w-[350px] outline outline-1 outline-indigo-100 *:px-6 py-2 rounded-md shadow-box bg-white h-[60vh] flex flex-col`}>
             <div className='flex items-center gap-x-6 text-gray-600 pb-2 pt-1'>
                 <SearchIcon />
                 <input placeholder={placeholder} type='text' className='w-full font-medium outline-none py-2' value={query} onChange={onChange} />
