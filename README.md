@@ -17,6 +17,7 @@ All files are bundled into 3 seperate files for both cjs, esm and dts using the 
 -   :white_check_mark: Opens as a popup.
 -   :white_check_mark: Animations.
 -   :white_check_mark: Light/dark mode toggle
+-   :white_check_mark: Display Recent searches
 
 ## :electric_plug: Installation
 

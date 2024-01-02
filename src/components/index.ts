@@ -9,8 +9,8 @@ type Section = {
     icon?: string;
     iconSize?: 'small' | 'medium' | 'large';
 }
-
-type Item = {
+export const LOCAL_STORAGE_KEY = 'search-history-search-component'
+export type Item = {
     content: string;
     title: string;
     href: string;
@@ -22,7 +22,7 @@ export type Animation = {
     duration?: 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6;
 }
 
-type Highlight = {
+export type Highlight = {
     highlight?: boolean;
     color?: string;
 }

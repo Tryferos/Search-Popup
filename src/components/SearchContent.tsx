@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { SearchProps, Animation } from '.';
+import { SearchProps, Animation, Item, LOCAL_STORAGE_KEY } from '.';
 import { ArrowIcon, Bolt } from './svg';
 import { AnimatePresence, motion } from 'framer-motion'
+import { Recent, RecentItem } from './Recent';
 
 type SearchContentProps = {
     query: string;
@@ -12,7 +13,6 @@ export function SearchContent(props: SearchContentProps) {
     const { animate, duration } = animation as Animation;
     const [sections, setSections] = useState(props.sections ?? []);
     const highlightFoundItems = props.highlight?.highlight ?? true;
-    const darkMode = props.darkMode as boolean;
     const openInNewTab = props.openInNewTab ?? true;
     const showRecent = props.showRecent ?? true;
     const shadow = props.shadow ?? true;
@@ -46,10 +46,25 @@ export function SearchContent(props: SearchContentProps) {
 
     }, [query])
 
+    const handleClick = (item: Item, sectionTitle: string) => {
+        let storedItems: RecentItem[] = []
+        const jsonLocalStore = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (jsonLocalStore != null) {
+            storedItems = JSON.parse(jsonLocalStore);
+        }
+        if (storedItems.find(i => i.item.title == item.title && sectionTitle == i.sectionTitle)) return;
+        storedItems.push({ item: item, sectionTitle: sectionTitle });
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storedItems));
+    }
+
 
     return (
         <Fragment>
             <AnimatePresence>
+                {
+                    showRecent && query.length == 0 &&
+                    <Recent animate={animate as boolean} duration={duration as number} />
+                }
                 {(sections.length != 0 && query.length != 0) ?
                     sections.map((section, i) => {
                         const size = section.iconSize ?? 'medium';
@@ -70,6 +85,7 @@ export function SearchContent(props: SearchContentProps) {
                                     section.items.map((item, j) => {
                                         return (
                                             <motion.a
+                                                onClick={() => handleClick(item, section.title)}
                                                 className='relative transition-all '
                                                 initial={{ opacity: animate ? 0 : 1 }}
                                                 animate={{ opacity: 1 }}
@@ -111,6 +127,7 @@ export function SearchContent(props: SearchContentProps) {
         </Fragment>
     )
 }
+
 
 function HighlightText({ text: aText, query, highlightFoundItems, color }:
     { text: string; query: string; highlightFoundItems: boolean; color?: string }) {
