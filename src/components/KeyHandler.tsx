@@ -62,8 +62,8 @@ export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType,
     return (
         <div ref={ref}
             onClick={onClick}
-            className="outline outline-1 h-6 flex items-center justify-center hover:outline-gray-500 outline-gray-400 rounded-[8px] bg-slate-200 px-1 font-mono cursor-pointer">
-            <p className="text-gray-700 font-medium">
+            className="outline outline-1 dark:bg-slate-600 dark:outline-slate-500 dark:hover:outline-slate-400 h-6 flex items-center justify-center hover:outline-gray-500 outline-gray-400 rounded-[8px] bg-slate-200 px-1 font-mono cursor-pointer">
+            <p className="text-gray-700 font-medium dark:text-gray-200">
                 {control && 'Ctrl+'}{keyType}
             </p>
         </div>
