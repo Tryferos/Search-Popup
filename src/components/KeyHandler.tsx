@@ -73,11 +73,11 @@ export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType,
     return (
         <div ref={ref}
             onClick={onClick}
-            className="outline outline-1 dark:bg-slate-600 dark:outline-slate-500 dark:hover:outline-slate-400 h-6 flex items-center justify-center hover:outline-gray-500 outline-gray-400 rounded-[8px] bg-slate-200 px-1 font-mono cursor-pointer">
-            <div className="text-gray-700 font-medium dark:text-gray-200">
+            className="outline outline-1 dark:bg-slate-600 uppercase dark:outline-slate-700 dark:hover:outline-slate-400 h-6 flex items-center justify-center hover:outline-gray-400 outline-gray-300 rounded-[8px] bg-slate-100 px-1 font-mono cursor-pointer">
+            <div className="text-gray-700 text-xs font-semibold dark:text-gray-300 *:flex *:items-center *:select-none">
                 {
-                    keyType == KeyType.UP ? <div className="flex"><UpIcon /><p>Next</p></div> : keyType ==
-                        KeyType.DOWN ? <div className="flex"><UpIcon down={true} /><p>Previous</p></div> :
+                    keyType == KeyType.UP ? <div ><UpIcon /><p>Next</p></div> : keyType ==
+                        KeyType.DOWN ? <div ><UpIcon down={true} /><p>Previous</p></div> :
                         keyType == KeyType.ENTER ? <div className="p-1"><EnterIcon /></div> :
                             <p>{(control ? 'Ctrl+' : '').concat(keyType)}</p>
                 }

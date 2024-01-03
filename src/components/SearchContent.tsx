@@ -112,8 +112,8 @@ export function SearchContent(props: SearchContentProps) {
                                                 key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
                                                 <div data-slot={isSelected ? 'selected' : ''}
                                                     className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down hover:shadow-none dark:shadow-none'} hover:bg-sky-400 
-                                                    dark:hover:bg-white dark:hover:text-black data-[slot=selected]:dark:bg-white group/data
-                                                    data-[slot=selected]:dark:text-black data-[slot=selected]:dark:border-b-slate-600 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
+                                                    dark:hover:bg-white dark:hover:text-black data-[slot=selected]:dark:bg-white data-[slot=selected]:bg-sky-400 group/data
+                                                    data-[slot=selected]:dark:text-black data-[slot=selected]:text-white data-[slot=selected]:dark:border-b-slate-600 data-[slot=selected]:border-b-slate-300 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
                                                         <figure className={`w-[5%] ${iconSize} flex items-center justify-center`}>
                                                             {
@@ -180,10 +180,10 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
         return substring;
     }
     return (
-        <span className='dark:text-gray-300 dark:group-hover:text-gray-600 group-data-[slot=selected]:dark:text-black'>
+        <span className='dark:text-gray-300 dark:group-hover:text-gray-600 group-data-[slot=selected]:text-white group-data-[slot=selected]:dark:text-black'>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
-            {foundTitle && <span ref={ref} className='group-hover:text-red-400 text-sky-400'>{titleHighlighted}</span>}
+            {foundTitle && <span ref={ref} className='group-hover:text-red-400 group-data-[slot=selected]:text-red-400 text-sky-400'>{titleHighlighted}</span>}
             {foundTitle && titleNormalAfter}
         </span>
     )
