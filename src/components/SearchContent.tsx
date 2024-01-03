@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
+import React, { useState, useEffect, Fragment, useRef, forwardRef } from 'react';
 import { SearchProps, Animation, Item, LOCAL_STORAGE_KEY } from '.';
 import { ArrowIcon, Bolt } from './svg';
 import { AnimatePresence, motion } from 'framer-motion'
@@ -6,16 +6,29 @@ import { Recent, RecentItem } from './Recent';
 
 type SearchContentProps = {
     query: string;
+    selectedIndex: number;
 } & SearchProps
 const HIGHLIGHT_SYNTAX = '/hightlight/';
+
 export function SearchContent(props: SearchContentProps) {
-    const { query, animation } = props;
+    const { query, animation, selectedIndex: vSelectedIndex } = props;
     const { animate, duration } = animation as Animation;
     const [sections, setSections] = useState(props.sections ?? []);
+    const [totalItems, setTotalItems] = useState(0);
     const highlightFoundItems = props.highlight?.highlight ?? true;
     const openInNewTab = props.openInNewTab ?? true;
     const showRecent = props.showRecent ?? true;
     const shadow = props.shadow ?? true;
+
+    const selectedIndex = vSelectedIndex;
+
+    useEffect(() => {
+
+        setTotalItems(sections.reduce((acc, curr) => {
+            return acc + curr.items.length;
+        }, 0));
+
+    }, [sections])
 
     const findItem = (content: string, title: string) => {
         const regex = new RegExp(query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
@@ -83,6 +96,11 @@ export function SearchContent(props: SearchContentProps) {
                                 </div>
                                 {
                                     section.items.map((item, j) => {
+                                        const index = sections.reduce((acc, curr, k) => {
+                                            return k < i ? acc + curr.items.length : acc;
+                                        }, j);
+                                        const selectedMappedIndex = selectedIndex % totalItems;
+                                        const isSelected = props.keyNavigation && index == selectedMappedIndex;
                                         return (
                                             <motion.a
                                                 onClick={() => handleClick(item, section.title)}
@@ -92,8 +110,10 @@ export function SearchContent(props: SearchContentProps) {
                                                 transition={{ duration: duration }}
                                                 exit={{ opacity: animate ? 0 : 1 }}
                                                 key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
-                                                <div
-                                                    className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down hover:shadow-none dark:shadow-none'} hover:bg-sky-400 dark:hover:bg-white dark:hover:text-black px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
+                                                <div data-slot={isSelected ? 'selected' : ''}
+                                                    className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down hover:shadow-none dark:shadow-none'} hover:bg-sky-400 
+                                                    dark:hover:bg-white dark:hover:text-black data-[slot=selected]:dark:bg-white group/data
+                                                    data-[slot=selected]:dark:text-black data-[slot=selected]:dark:border-b-slate-600 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
                                                         <figure className={`w-[5%] ${iconSize} flex items-center justify-center`}>
                                                             {
@@ -160,7 +180,7 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
         return substring;
     }
     return (
-        <span className='dark:text-gray-300 dark:group-hover:text-gray-600'>
+        <span className='dark:text-gray-300 dark:group-hover:text-gray-600 group-data-[slot=selected]:dark:text-black'>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
             {foundTitle && <span ref={ref} className='group-hover:text-red-400 text-sky-400'>{titleHighlighted}</span>}

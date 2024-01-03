@@ -1,9 +1,12 @@
 
 import React, { useRef, useEffect, useState } from "react"
+import { EnterIcon, UpIcon } from "./svg";
 export enum KeyType {
     ESC = 'esc',
     ENTER = 'enter',
-    K = 'K'
+    K = 'K',
+    UP = 'UP',
+    DOWN = 'DOWN'
 }
 export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType, onClick: (ev: React.MouseEvent) => void, control?: boolean }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -15,9 +18,13 @@ export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType,
     const control = vControl ?? false;
     const mapKeys = () => {
         if (keyType == KeyType.ESC) return 'escape';
+        if (keyType == KeyType.UP) return 'arrowup';
+        if (keyType == KeyType.DOWN) return 'arrowdown';
         return keyType;
     }
+    const preventKeys = ['k']
     useEffect(() => {
+        //* Handle control key
         if (!control) {
             setControlDown(false);
             if (controlDownRef.current) window.removeEventListener('keydown', controlDownRef.current as any);
@@ -25,7 +32,9 @@ export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType,
             return;
         }
         controlDownRef.current = (ev: KeyboardEvent) => {
-            if (ev.target == document.body) ev.preventDefault();
+            if (ev.target == document.body && preventKeys.some(k => k == ev.key.toLowerCase())) {
+                ev.preventDefault();
+            }
             if (ev.repeat) return;
             if (ev.key.toLowerCase() == 'control') {
                 setControlDown(true);
@@ -43,6 +52,8 @@ export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType,
             window.removeEventListener('keyup', controlUpRef.current as any);
         }
     }, [controlDownRef, controlUpRef, control])
+
+    //* Handle normal key
     useEffect(() => {
         if (!ref.current) return;
         const body = document.body;
@@ -63,9 +74,14 @@ export function Key({ keyType, onClick, control: vControl }: { keyType: KeyType,
         <div ref={ref}
             onClick={onClick}
             className="outline outline-1 dark:bg-slate-600 dark:outline-slate-500 dark:hover:outline-slate-400 h-6 flex items-center justify-center hover:outline-gray-500 outline-gray-400 rounded-[8px] bg-slate-200 px-1 font-mono cursor-pointer">
-            <p className="text-gray-700 font-medium dark:text-gray-200">
-                {control && 'Ctrl+'}{keyType}
-            </p>
+            <div className="text-gray-700 font-medium dark:text-gray-200">
+                {
+                    keyType == KeyType.UP ? <div className="flex"><UpIcon /><p>Next</p></div> : keyType ==
+                        KeyType.DOWN ? <div className="flex"><UpIcon down={true} /><p>Previous</p></div> :
+                        keyType == KeyType.ENTER ? <div className="p-1"><EnterIcon /></div> :
+                            <p>{(control ? 'Ctrl+' : '').concat(keyType)}</p>
+                }
+            </div>
         </div>
     )
 }
