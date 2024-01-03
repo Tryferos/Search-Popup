@@ -33,14 +33,14 @@ export function ArrowIcon() {
 
 export function EnterIcon() {
     return (
-        <svg className="w-6 h-6" viewBox="0 0 20 20"><g stroke="currentColor" fill="none" fillRule="evenodd"
+        <svg className="w-4 h-4" viewBox="0 0 20 20"><g stroke="currentColor" fill="none" fillRule="evenodd"
             strokeLinecap="round" strokeLinejoin="round"><path d="M18 3v4c0 2-2 4-4 4H2"></path><path d="M8 17l-6-6 6-6"></path></g></svg>
     )
 }
 
 export function UpIcon({ down = false }: { down?: boolean }) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-6 h-6 ${down && 'rotate-180'}`}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-4 h-4 ${down && 'rotate-180'}`}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18" />
         </svg>
 
