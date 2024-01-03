@@ -2,6 +2,7 @@ import { Root, createRoot } from "react-dom/client";
 import { SearchWrapper } from "./SearchWrapper"
 import React, { ReactElement, ReactNode, useEffect, useRef, useContext, createContext, Fragment, useState } from 'react';
 import { SearchIcon } from "./svg";
+import { Key, KeyType } from './KeyHandler'
 import { AnimatePresence } from "framer-motion";
 import { SearchContext, SearchProps } from ".";
 
@@ -27,9 +28,10 @@ export function SearchPrompt(props: Props) {
     }, [darkMode, ref])
     return (
         <div ref={ref} id='search-prompt' onClick={onClick}
-            className={`outline cursor-pointer dark:bg-slate-800 dark:text-white dark:outline-black dark:hover:bg-slate-900 hover:outline-gray-900 text-gray-600 flex gap-x-4 min-w-[200px] w-10 py-2 px-2 outline-1 outline-gray-600 rounded bg-white`}>
+            className={`outline cursor-pointer items-center dark:bg-slate-800 dark:text-white dark:outline-black dark:hover:bg-slate-900 hover:outline-gray-900 text-gray-600 flex gap-x-4  ${props.keyNavigation ? 'min-w-[270px]' : 'min-w-[210px]'} w-10 py-2 px-2 outline-1 outline-gray-600 rounded bg-white`}>
             <SearchIcon />
-            <p>{placeholder}</p>
+            <p className="">{placeholder}</p>
+            {props.keyNavigation && <Key keyType={KeyType.K} control={true} onClick={onClick} />}
         </div>
     )
 }
@@ -37,6 +39,7 @@ export function SearchPrompt(props: Props) {
 export function SearchElement(props: SearchProps) {
     const [open, setIsOpen] = useState(false);
     const darkMode = props.darkMode ?? false;
+    const keyNavigation = props.keyNavigation ?? true;
     const handleOpen = (forceOpen?: boolean) => {
         setIsOpen(forceOpen ?? !open);
     }
@@ -47,13 +50,13 @@ export function SearchElement(props: SearchProps) {
         <Fragment>
             {
                 props.children ? <div id='search-prompt' onClick={() => handleOpen(true)}>{props.children}</div> :
-                    <SearchPrompt {...props} darkMode={darkMode} handleOpen={handleOpen} isOpen={open} />
+                    <SearchPrompt keyNavigation={keyNavigation} {...props} darkMode={darkMode} handleOpen={handleOpen} isOpen={open} />
             }
             <section id='search-root' className="w-[100vw] h-[100vh] pointer-events-none fixed top-0 left-0 z-[10000]">
                 <AnimatePresence>
                     {
                         open &&
-                        <SearchTriggered {...props} darkMode={darkMode} isOpen={open} handleOpen={handleOpen} />
+                        <SearchTriggered keyNavigation={keyNavigation} {...props} darkMode={darkMode} isOpen={open} handleOpen={handleOpen} />
                     }
                 </AnimatePresence>
             </section>

@@ -38,6 +38,7 @@ export type SearchProps = {
     showRecent?: boolean;
     children?: ReactElement;
     openInNewTab?: boolean;
+    keyNavigation?: boolean;
     onSearch?: (query: string) => void;
     onOpenTrigger?: (isOpen: boolean) => void;
 }

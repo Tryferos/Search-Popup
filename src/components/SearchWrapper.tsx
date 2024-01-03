@@ -2,6 +2,7 @@ import React, { ReactNode, forwardRef, useEffect, useState } from 'react';
 import '../tailwind.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ExitIcon, SearchIcon } from './svg';
+import { Key, KeyType } from './KeyHandler'
 import { SearchContext, SearchProps } from '.';
 import { SearchContent } from './SearchContent';
 
@@ -16,7 +17,9 @@ function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.Forward
     const darkMode = props.darkMode ?? false;
     const animate = props.animation?.animate ?? true;
     const duration = props.animation?.duration ?? 0.3;
+    const keyNavigation = props.keyNavigation
 
+    const handleClose = () => props.handleOpen(false);
     return (
         <motion.section
             initial={{ opacity: animate ? 0 : 1, scale: animate ? 0.4 : 1 }}
@@ -27,7 +30,12 @@ function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.Forward
             <div className='flex items-center gap-x-6 text-gray-600 dark:text-gray-200 pb-2 pt-1'>
                 <SearchIcon />
                 <input placeholder={placeholder} type='text' className='w-full dark:placeholder:text-gray-200 dark:bg-slate-800 bg-white dark:text-white font-medium outline-none py-2' value={query} onChange={onChange} />
-                <ExitIcon onClick={() => props.handleOpen(false)} />
+                {
+                    keyNavigation ?
+                        <Key keyType={KeyType.ESC} onClick={handleClose} />
+                        :
+                        <ExitIcon onClick={handleClose} />
+                }
             </div>
             <AnimatePresence>
                 <ul
