@@ -21,6 +21,7 @@ export function SearchContent(props: SearchContentProps) {
     const shadow = props.shadow ?? true;
 
     const selectedIndex = vSelectedIndex;
+    const nothingSelected = selectedIndex == -1;
 
     useEffect(() => {
 
@@ -76,7 +77,7 @@ export function SearchContent(props: SearchContentProps) {
             <AnimatePresence>
                 {
                     showRecent && query.length == 0 &&
-                    <Recent animate={animate as boolean} duration={duration as number} />
+                    <Recent selectedIndex={selectedIndex} openInNewTab={openInNewTab} animate={animate as boolean} duration={duration as number} />
                 }
                 {(sections.length != 0 && query.length != 0) ?
                     sections.map((section, i) => {
@@ -91,7 +92,7 @@ export function SearchContent(props: SearchContentProps) {
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: duration }}
                                         exit={{ opacity: animate ? 0 : 1 }}
-                                        className='text-lg dark:text-white py-2 font-medium px-4 rounded-md'>{section.title}
+                                        className='text-lg dark:text-white py-2 pb-4 font-medium px-0 rounded-md'>{section.title}
                                     </motion.h3>
                                 </div>
                                 {
@@ -111,23 +112,24 @@ export function SearchContent(props: SearchContentProps) {
                                                 exit={{ opacity: animate ? 0 : 1 }}
                                                 key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
                                                 <div data-slot={isSelected ? 'selected' : ''}
-                                                    className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down hover:shadow-none dark:shadow-none'} hover:bg-sky-400 
-                                                    dark:hover:bg-white dark:hover:text-black data-[slot=selected]:dark:bg-white data-[slot=selected]:bg-sky-400 group/data
-                                                    data-[slot=selected]:dark:text-black data-[slot=selected]:text-white data-[slot=selected]:dark:border-b-slate-600 data-[slot=selected]:border-b-slate-300 px-4 transition-all relative rounded-md hover:text-white justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
+                                                    className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down dark:shadow-none'}
+                                                    ${nothingSelected && 'dark:hover:bg-white dark:hover:text-black hover:bg-sky-400 hover:shadow-none hover:text-white'} data-[slot=selected]:dark:bg-white data-[slot=selected]:bg-sky-400 group/data
+                                                    data-[slot=selected]:dark:text-black data-[slot=selected]:text-white data-[slot=selected]:dark:border-b-slate-600 data-[slot=selected]:border-b-slate-300 px-4 transition-all relative rounded-md justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
-                                                        <figure className={`w-[5%] ${iconSize} flex items-center justify-center`}>
+                                                        <figure className={`w-[5%] ${iconSize} text-black dark:text-white flex items-center justify-center`}>
                                                             {
-                                                                (!item.icon && !section.icon) ? <Bolt /> :
+                                                                (!item.icon && !section.icon) ?
+                                                                    <Bolt allowHover={nothingSelected} /> :
                                                                     <img className={iconSize} src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
                                                             }
                                                         </figure>
                                                         <div className='flex flex-col w-[calc(95%-16px)]'>
                                                             <h3 className='font-medium truncate text-lg first-letter:uppercase'>
-                                                                <HighlightText text={item.title} query={query}
+                                                                <HighlightText nothingSelected={nothingSelected} text={item.title} query={query}
                                                                     highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
                                                             </h3>
-                                                            <p className='text-gray-600 group-hover:text-gray-100 truncate first-letter:uppercase'>
-                                                                <HighlightText text={item.content} query={query}
+                                                            <p className='text-gray-600 truncate first-letter:uppercase'>
+                                                                <HighlightText nothingSelected={nothingSelected} text={item.content} query={query}
                                                                     highlightFoundItems={highlightFoundItems} color={props.highlight?.color} />
                                                             </p>
                                                         </div>
@@ -149,8 +151,8 @@ export function SearchContent(props: SearchContentProps) {
 }
 
 
-function HighlightText({ text: aText, query, highlightFoundItems, color }:
-    { text: string; query: string; highlightFoundItems: boolean; color?: string }) {
+function HighlightText({ text: aText, query, highlightFoundItems, color, nothingSelected }:
+    { text: string; query: string; highlightFoundItems: boolean; color?: string; nothingSelected: boolean }) {
     const ref = useRef<HTMLSpanElement>(null);
     useEffect(() => {
         if (!ref || !ref.current || !highlightFoundItems || !color) return;
@@ -180,10 +182,13 @@ function HighlightText({ text: aText, query, highlightFoundItems, color }:
         return substring;
     }
     return (
-        <span className='dark:text-gray-300 dark:group-hover:text-gray-600 group-data-[slot=selected]:text-white group-data-[slot=selected]:dark:text-black'>
+        <span
+            className={`dark:text-gray-300 ${nothingSelected && 'dark:group-hover:text-gray-600 group-hover:text-gray-100'}
+        group-data-[slot=selected]:text-white group-data-[slot=selected]:dark:text-black`}>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
-            {foundTitle && <span ref={ref} className='group-hover:text-red-400 group-data-[slot=selected]:text-red-400 text-sky-400'>{titleHighlighted}</span>}
+            {foundTitle && <span ref={ref}
+                className={`${nothingSelected && 'group-hover:text-purple-700'} group-data-[slot=selected]:text-purple-700 text-sky-400`}>{titleHighlighted}</span>}
             {foundTitle && titleNormalAfter}
         </span>
     )

@@ -47,9 +47,12 @@ export function UpIcon({ down = false }: { down?: boolean }) {
     )
 }
 
-export function Bolt() {
+export function Bolt({ allowHover: vAllow }: { allowHover?: boolean }) {
+    const allowHover = vAllow ?? true;
+
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="group-hover:fill-white dark:fill-white dark:group-hover:fill-sky-400 dark:group-hover:text-sky-400 scale-[0.8]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+            className={`group-hover:fill-white group-data-[slot=selected]:text-white group-data-[slot=selected]:fill-white group-data-[slot=selected]:dark:text-sky-400 group-data-[slot=selected]:dark:fill-sky-400 ${allowHover && 'dark:group-hover:fill-sky-400 group-hover:text-white dark:group-hover:text-sky-400'} dark:fill-white scale-[0.8]`}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
         </svg>
     )

@@ -11,7 +11,6 @@ export const SearchWrapper = forwardRef(SearchWrapperRef);
 function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.ForwardedRef<HTMLDivElement>) {
     const [query, setQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-    const selectedRef = useRef<HTMLAnchorElement>();
     const listRef = useRef<HTMLUListElement>(null);
     const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(ev.target.value);
@@ -34,6 +33,7 @@ function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.Forward
         if (!listRef.current) return;
         const list = listRef.current;
         const listener = (ev: MouseEvent) => {
+            if ((ev.target as HTMLElement).tagName.toLocaleLowerCase() == 'ul') return;
             setSelectedIndex(-1);
         }
         list.addEventListener('mouseover', listener);
