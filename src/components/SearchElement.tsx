@@ -26,17 +26,12 @@ export function SearchPrompt(props: Props) {
         parentRef.classList.remove('dark');
 
     }, [darkMode, ref])
-    const onFocus = (ev: React.FocusEvent<HTMLInputElement>) => {
-        if (!ref || !ref.current) return;
-        ev.target.blur();
-        onClick();
 
-    }
     return (
         <div ref={ref} id='search-prompt' onClick={onClick}
             className={`outline cursor-pointer items-center outline-2 dark:bg-slate-800 dark:text-white dark:outline-black dark:hover:bg-slate-900 hover:outline-gray-900 text-gray-600 flex gap-x-4  ${props.keyNavigation ? 'min-w-[270px]' : 'min-w-[210px]'} w-10 py-2 px-2 outline-1 outline-gray-600 rounded bg-white`}>
             <SearchIcon />
-            <input type='text' readOnly onFocus={(ev) => onFocus(ev)}
+            <input type='text' readOnly
                 autoFocus={false} placeholder={placeholder} value={''} className="bg-transparent cursor-pointer outline-none w-[60%]" />
             {props.keyNavigation && <Key keyType={KeyType.K} control={true} onClick={onClick} />}
         </div>

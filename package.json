@@ -1,6 +1,6 @@
 {
   "name": "@tryferos/search",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Provides you with search components to use in your React app.",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
