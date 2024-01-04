@@ -80,6 +80,7 @@ import { SearchElement } from "@tryferos/search";
     showRecent?: boolean;
     openInNewTab?: boolean;
     onSearch?: (query: string) => void;
+    keyboardNavigation?: boolean;
     onOpenTrigger?: (isOpen: boolean) => void;
 ```
 

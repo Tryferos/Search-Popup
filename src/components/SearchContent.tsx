@@ -79,13 +79,19 @@ export function SearchContent(props: SearchContentProps) {
                     showRecent && query.length == 0 &&
                     <Recent selectedIndex={selectedIndex} openInNewTab={openInNewTab} animate={animate as boolean} duration={duration as number} />
                 }
+                {
+                    sections.length == 0 && query.length != 0 &&
+                    <div className='text-center py-10 font-medium text-gray-500 text-lg'>
+                        No results found
+                    </div>
+                }
                 {(sections.length != 0 && query.length != 0) ?
                     sections.map((section, i) => {
                         const size = section.iconSize ?? 'medium';
                         const iconSize = size == 'small' ? 'size-6 min-w-[24px]' : size == 'medium' ? 'size-8 min-w-[36px]' : 'size-12 min-w-[52px]';
                         return (
                             <li
-                                key={i} className='flex flex-col'>
+                                key={i} className='flex flex-col group/li'>
                                 <div className='flex'>
                                     <motion.h3
                                         initial={{ opacity: animate ? 0 : 1 }}
@@ -105,15 +111,15 @@ export function SearchContent(props: SearchContentProps) {
                                         return (
                                             <motion.a
                                                 onClick={() => handleClick(item, section.title)}
-                                                className='relative transition-all '
+                                                className='relative transition-all outline-none group/a'
                                                 initial={{ opacity: animate ? 0 : 1 }}
                                                 animate={{ opacity: 1 }}
                                                 transition={{ duration: duration }}
                                                 exit={{ opacity: animate ? 0 : 1 }}
                                                 key={j} href={item.href ?? '#'} target={openInNewTab ? '_blank' : '_self'}>
                                                 <div data-slot={isSelected ? 'selected' : ''}
-                                                    className={`flex dark:bg-slate-800 dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down dark:shadow-none'}
-                                                    ${nothingSelected && 'dark:hover:bg-white dark:hover:text-black hover:bg-sky-400 hover:shadow-none hover:text-white'} data-[slot=selected]:dark:bg-white data-[slot=selected]:bg-sky-400 group/data
+                                                    className={`flex dark:bg-slate-800  dark:border-b-slate-600 dark:text-white group ${shadow && 'shadow-box-down dark:shadow-none'}
+                                                    ${nothingSelected && 'dark:hover:bg-white dark:hover:text-black hover:bg-sky-400 hover:shadow-none hover:text-white group-focus/a:bg-sky-400 group-focus/a:text-white group-focus/a:dark:bg-white group-focus/a:dark:text-black'} data-[slot=selected]:dark:bg-white data-[slot=selected]:bg-sky-400 group/data
                                                     data-[slot=selected]:dark:text-black data-[slot=selected]:text-white data-[slot=selected]:dark:border-b-slate-600 data-[slot=selected]:border-b-slate-300 px-4 transition-all relative rounded-md justify-between items-center border-b-[1px] border-b-gray-200 py-2`}>
                                                     <div className='flex gap-x-4 items-center w-[80%]'>
                                                         <figure className={`w-[5%] ${iconSize} text-black dark:text-white flex items-center justify-center`}>
@@ -183,12 +189,12 @@ function HighlightText({ text: aText, query, highlightFoundItems, color, nothing
     }
     return (
         <span
-            className={`dark:text-gray-300 ${nothingSelected && 'dark:group-hover:text-gray-600 group-hover:text-gray-100'}
+            className={`dark:text-gray-300 ${nothingSelected && 'dark:group-hover:text-gray-600 group-focus/a:dark:text-gray-600 group-focus/a:text-gray-100 group-hover:text-gray-100'}
         group-data-[slot=selected]:text-white group-data-[slot=selected]:dark:text-black`}>
             {!foundTitle && text}
             {foundTitle && titleNormalBefore}
             {foundTitle && <span ref={ref}
-                className={`${nothingSelected && 'group-hover:text-purple-700'} group-data-[slot=selected]:text-purple-700 text-sky-400`}>{titleHighlighted}</span>}
+                className={`${nothingSelected && 'group-hover:text-purple-700 group-focus/a:text-purple-700'} group-data-[slot=selected]:text-purple-700 text-sky-400`}>{titleHighlighted}</span>}
             {foundTitle && titleNormalAfter}
         </span>
     )

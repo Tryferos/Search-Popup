@@ -1,6 +1,6 @@
 {
   "name": "@tryferos/search",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Provides you with search components to use in your React app.",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -25,7 +25,8 @@
     "build:linux:darwin": "(rm dist -r -f) && rollup -c --bundleConfigAsCjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "publish-build": "npm run build && npm publish --tag public"
+    "publish-build": "npm run build && npm publish --tag public",
+    "publish-build-latest": "npm run build && npm publish --tag latest"
   },
   "author": "tryferos",
   "license": "ISC",

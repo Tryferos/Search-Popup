@@ -32,13 +32,19 @@ function SearchWrapperRef(props: SearchProps & SearchContext, ref: React.Forward
     useEffect(() => {
         if (!listRef.current) return;
         const list = listRef.current;
-        const listener = (ev: MouseEvent) => {
+        const hoverListener = (ev: MouseEvent) => {
             if ((ev.target as HTMLElement).tagName.toLocaleLowerCase() == 'ul') return;
             setSelectedIndex(-1);
         }
-        list.addEventListener('mouseover', listener);
+        const focusListener = (ev: FocusEvent) => {
+            if ((ev.target as HTMLElement).tagName.toLocaleLowerCase() != 'a') return;
+            setSelectedIndex(-1);
+        }
+        list.addEventListener('mouseover', hoverListener);
+        list.addEventListener('focusin', focusListener);
         return () => {
-            list.removeEventListener('mouseover', listener);
+            list.removeEventListener('mouseover', hoverListener);
+            list.removeEventListener('focusin', focusListener);
         }
     }, [listRef])
 
