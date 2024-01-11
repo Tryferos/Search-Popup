@@ -18,3 +18,7 @@
     border: 2px rgb(30, 41, 59) solid;
     border-radius: 4px;
 }
+
+.element-bg{
+    background-color: rgba(241, 245, 249,0.2);
+}

@@ -126,7 +126,9 @@ export function SearchContent(props: SearchContentProps) {
                                                             {
                                                                 (!item.icon && !section.icon) ?
                                                                     <Bolt allowHover={nothingSelected} /> :
-                                                                    <img className={iconSize} src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
+                                                                    <img
+                                                                        className={iconSize + " object-contain"}
+                                                                        src={(item.icon ?? section.icon) as unknown as string} alt={item.title} />
                                                             }
                                                         </figure>
                                                         <div className='flex flex-col w-[calc(95%-16px)]'>

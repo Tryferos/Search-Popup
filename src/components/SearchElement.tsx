@@ -48,13 +48,14 @@ export function SearchElement(props: SearchProps) {
     useEffect(() => {
         props.onOpenTrigger && props.onOpenTrigger(open);
     }, [open])
+
     return (
         <Fragment>
             {
                 props.children ? <div id='search-prompt' onClick={() => handleOpen(true)}>{props.children}</div> :
                     <SearchPrompt keyNavigation={keyNavigation} {...props} darkMode={darkMode} handleOpen={handleOpen} isOpen={open} />
             }
-            <section id='search-root' className="w-[100vw] h-[100vh] pointer-events-none fixed top-0 left-0 z-[10000]">
+            <section id='search-root' className="w-[100vw] h-[100vh] pointer-events-none fixed top-0 left-0 z-[9999999999999]">
                 <AnimatePresence>
                     {
                         open &&
@@ -108,7 +109,7 @@ export function SearchTriggered<T>(props: Props
     if (!isOpen) return null;
     return (
         <div id='search-triggered' className="w-full h-full absolute pt-[5%] ">
-            <div className="w-full absolute left-0 top-0 h-full bg-slate-100 bg-opacity-50"></div>
+            <div className="w-full absolute left-0 top-0 h-full element-bg"></div>
             <div ref={parentRef} className="absolute flex justify-center h-[100%] w-[100%]">
                 <SearchWrapper ref={ref} {...props} />
             </div>
